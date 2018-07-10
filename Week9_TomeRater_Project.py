@@ -65,10 +65,11 @@ class Book:
             print("Invalid Rating")
 
     def get_average_rating(self):
-        total_ratings = 0
-        for rating in self.ratings:
-            total_ratings += rating
-        return total_ratings / len(self.ratings)
+        #total_ratings = 0
+        #for rating in self.ratings:
+        #    total_ratings += rating
+        #return total_ratings / len(self.ratings)
+        return sum(self.ratings) / len(self.ratings)
 
     def __hash__(self):  # Allows the book to be hashable. https://docs.python.org/3/library/functions.html#hash
         return hash((self.title, self.isbn))
@@ -87,6 +88,7 @@ class Fiction(Book):
 
     def __repr__(self):
         return "{} by {}".format(self.title, self.author)
+# TESTS
 #fict1 = Fiction("Alice In Wonderland", "Lewis Carroll", 12345)
 #fict2 = Fiction("Chthulu", "HP Lovecraft", 112233)
 #print(fict1)
@@ -107,6 +109,7 @@ class Non_Fiction(Book):
 
     def __repr__(self):
         return "{}, a {} manual on {}".format(self.title, self.level, self.subject)
+# TESTS
 #non_fict1 = Non_Fiction("Automate the Boring Stuff", "Python", "beginner", 1929452)
 #non_fict2 = Non_Fiction("Computing Machinery and Intelligence", "AI", "advanced", 11111938)
 #print(non_fict1)
@@ -152,11 +155,11 @@ class TomeRater:
         else:
             print("No user with email {}!".format(email))
 
-    def add_user(self, name, email, books=None):
+    def add_user(self, name, email, user_books=None):
         user = User(name, email)
         self.users[email] = user
-        if books is not None:
-            for book in books:
+        if user_books is not None:
+            for book in user_books:
                 self.add_book_to_user(book, email)
 
     def print_catalog(self):
@@ -167,7 +170,7 @@ class TomeRater:
         for user in self.users:
             print(user)
 
-    def most_read_book(self):  # Returns the highest value found in the dictionary
+    def get_most_read_book(self):  # Returns the highest value found in the dictionary
         highest_value = 0
         highest_key = ""
         for book in self.books:
@@ -181,17 +184,14 @@ class TomeRater:
 
     def most_positive_user(self):
         pass
-
-
-print("Start")
-print("")
-
-test_book = TomeRater()
-test_book.create_book("Book", 1111)
-test_book.add_book_to_user(Book, "daniel.a.boggs@gmail.com")
-test_book.add_user("Dan", "daniel.a.boggs@gmail.com")
-test_book.add_book_to_user(Book, "daniel.a.boggs@gmail.com")
-print(test_book)
+# TESTS
+#test_book = TomeRater()
+#test_book.create_novel("Book", "JRR Tolkein", 1111)
+#test_book.add_book_to_user(Book, "daniel.a.boggs@gmail.com")
+#test_book.add_user("Dan", "daniel.a.boggs@gmail.com")
+#test_book.add_book_to_user(Book, "daniel.a.boggs@gmail.com")
+#print(test_book.books)
+#print(test_book.users)
 #print(test_book.print_catalog())
 #print(test_book.print_users())
 
@@ -200,5 +200,3 @@ print(test_book)
 #print(test_novel.create_novel("Novel", "R.L. Stein", 2222))
 #test_nonfiction = TomeRater()
 #print(test_nonfiction.create_non_fiction("NonFiction", "Writing", "Hard", 3333))
-print("")
-print("End")
