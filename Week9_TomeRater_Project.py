@@ -20,8 +20,8 @@ class User:  # Methods Tested
         # Iterates through all of the values in self.books, which are the ratings, and calculates the average rating.
         # It should return this average.
         total_ratings = 0
-        for book in self.books:
-            for rating in book.get(book):
+        for rating in self.books.values():
+            if rating:
                 total_ratings += rating
         return total_ratings / len(self.books)  # Divide total_ratings by the number of books in dictionary
 
@@ -56,7 +56,7 @@ class Book:
 
     def set_isbn(self, isbn):
         self.isbn = isbn
-        print("This book's ISBN has been updated")  # Should also print a message saying the book's ISBN was updated
+        print("This book's ISBN has been updated.")  # Should also print a message saying the book's ISBN was updated
 
     def add_rating(self, rating):  # Adds to Rating List if between 0-4, else prints invalid
         if rating >= 0 and rating <= 4:
@@ -177,13 +177,27 @@ class TomeRater:
             if self.books.get(book) > highest_value:
                 highest_value = self.books.get(book)
                 highest_key = book
-        return highest_key
+        return "Most read book: {}, Read {} times.".format(highest_key, highest_value)
 
     def highest_rated_book(self):
-        pass
+        highest_value = 0
+        book_name = ""
+        for book in self.books:
+            if book.get_average_rating() > highest_value:
+                highest_value = book.get_average_rating()
+                book_name = book.title
+        return "Highest rated book: {}, Rated at {}.".format(book_name, highest_value)
 
     def most_positive_user(self):
-        pass
+        highest_value = 0
+        user_name = ""
+        for user in self.users.values():
+            temp_user = user.get_average_rating()
+            if temp_user > highest_value:
+                highest_value = temp_user
+                user_name = user.name
+        return "Most postive user: {}, has an average rating of {}.".format(user_name, highest_value)
+
 # TESTS
 #test_book = TomeRater()
 #test_book.create_novel("Book", "JRR Tolkein", 1111)
