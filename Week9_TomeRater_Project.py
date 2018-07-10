@@ -16,9 +16,7 @@ class User:  # Methods Tested
     def read_book(self, book, rating=None):
         self.books[book] = rating
 
-    def get_average_rating(self):
-        # Iterates through all of the values in self.books, which are the ratings, and calculates the average rating.
-        # It should return this average.
+    def get_average_rating(self):  # Calculates average rating
         total_ratings = 0
         for rating in self.books.values():
             if rating:
@@ -30,13 +28,6 @@ class User:  # Methods Tested
 
     def __eq__(self, other_user):  # Returns True if name & email match, else False
         return self.name == other_user.name and self.email == other_user.email
-# TESTS
-#alan = User("Alan Turing", "alan@turing.com")
-#dan = User("Daniel Boggs", "dan@email.com")
-#alan.change_email("new@email.com")
-#print(alan)
-#print(alan.__eq__(dan))  # Prints False
-#print(alan.__eq__(alan))  # Prints True
 
 
 class Book:
@@ -65,10 +56,6 @@ class Book:
             print("Invalid Rating")
 
     def get_average_rating(self):
-        #total_ratings = 0
-        #for rating in self.ratings:
-        #    total_ratings += rating
-        #return total_ratings / len(self.ratings)
         return sum(self.ratings) / len(self.ratings)
 
     def __hash__(self):  # Allows the book to be hashable. https://docs.python.org/3/library/functions.html#hash
@@ -88,11 +75,6 @@ class Fiction(Book):
 
     def __repr__(self):
         return "{} by {}".format(self.title, self.author)
-# TESTS
-#fict1 = Fiction("Alice In Wonderland", "Lewis Carroll", 12345)
-#fict2 = Fiction("Chthulu", "HP Lovecraft", 112233)
-#print(fict1)
-#print(fict1.get_author())
 
 
 class Non_Fiction(Book):
@@ -109,14 +91,6 @@ class Non_Fiction(Book):
 
     def __repr__(self):
         return "{}, a {} manual on {}".format(self.title, self.level, self.subject)
-# TESTS
-#non_fict1 = Non_Fiction("Automate the Boring Stuff", "Python", "beginner", 1929452)
-#non_fict2 = Non_Fiction("Computing Machinery and Intelligence", "AI", "advanced", 11111938)
-#print(non_fict1)
-#print(non_fict2)
-#non_fict2.add_rating(2)
-#print(non_fict2.ratings)  # Prints 2
-#print(non_fict1.__eq__(non_fict1))  # Returns True
 
 
 class TomeRater:
@@ -198,19 +172,45 @@ class TomeRater:
                 user_name = user.name
         return "Most postive user: {}, has an average rating of {}.".format(user_name, highest_value)
 
+
 # TESTS
-#test_book = TomeRater()
-#test_book.create_novel("Book", "JRR Tolkein", 1111)
-#test_book.add_book_to_user(Book, "daniel.a.boggs@gmail.com")
-#test_book.add_user("Dan", "daniel.a.boggs@gmail.com")
-#test_book.add_book_to_user(Book, "daniel.a.boggs@gmail.com")
-#print(test_book.books)
-#print(test_book.users)
-#print(test_book.print_catalog())
-#print(test_book.print_users())
+# Create object from TomeRater Class
+Tome_Rater = TomeRater()
+
+# Create some books:
+book1 = Tome_Rater.create_book("Society of Mind", 12345678)
+novel1 = Tome_Rater.create_novel("Alice In Wonderland", "Lewis Carroll", 12345)
+novel1.set_isbn(9781536831139)
+nonfiction1 = Tome_Rater.create_non_fiction("Automate the Boring Stuff", "Python", "beginner", 1929452)
+nonfiction2 = Tome_Rater.create_non_fiction("Computing Machinery and Intelligence", "AI", "advanced", 11111938)
+novel2 = Tome_Rater.create_novel("The Diamond Age", "Neal Stephenson", 10101010)
+novel3 = Tome_Rater.create_novel("There Will Come Soft Rains", "Ray Bradbury", 10001000)
+
+# Create users:
+Tome_Rater.add_user("Alan Turing", "alan@turing.com")
+Tome_Rater.add_user("David Marr", "david@computation.org")
+
+# Add a user with three books already read:
+Tome_Rater.add_user("Marvin Minsky", "marvin@mit.edu", user_books=[book1, novel1, nonfiction1])
+
+# Add books to a user one by one, with ratings:
+Tome_Rater.add_book_to_user(book1, "alan@turing.com", 1)
+Tome_Rater.add_book_to_user(novel1, "alan@turing.com", 3)
+Tome_Rater.add_book_to_user(nonfiction1, "alan@turing.com", 3)
+Tome_Rater.add_book_to_user(nonfiction2, "alan@turing.com", 4)
+Tome_Rater.add_book_to_user(novel3, "alan@turing.com", 1)
+
+Tome_Rater.add_book_to_user(novel2, "marvin@mit.edu", 2)
+Tome_Rater.add_book_to_user(novel3, "marvin@mit.edu", 2)
+Tome_Rater.add_book_to_user(novel3, "david@computation.org", 4)
 
 
-#test_novel = TomeRater()
-#print(test_novel.create_novel("Novel", "R.L. Stein", 2222))
-#test_nonfiction = TomeRater()
-#print(test_nonfiction.create_non_fiction("NonFiction", "Writing", "Hard", 3333))
+# Verify Functions
+Tome_Rater.print_catalog()
+Tome_Rater.print_users()
+print("Most positive user:")
+print(Tome_Rater.most_positive_user())
+print("Highest rated book:")
+print(Tome_Rater.highest_rated_book())
+print("Most read book:")
+print(Tome_Rater.get_most_read_book())
